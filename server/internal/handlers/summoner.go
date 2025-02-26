@@ -1,27 +1,22 @@
 package handlers
 
 import (
-    "errors"
-    "nashor/internal/services"
-    "nashor/internal/problem"
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
+	"nashor/internal/helpers"
+	"nashor/internal/services"
 )
 
-func SummonerByPuuid(c *gin.Context) {
-    puuid := c.Param("puuid")
+func HandleGetSummonerById(c *gin.Context) {
+	puuid := c.Param("puuid")
 
-    data, err := services.GetSummonerByPuuid(puuid)
+	data, err := services.GetSummonerByPuuid(puuid)
 
-    if err != nil {
-        var perr problem.ErrorResponse
-        if errors.As(err, &perr) {
-            c.JSON(perr.Status, perr)
-            return
-        }
+	if err != nil {
+		res := helpers.HttpResFromErr(err)
 
-        c.JSON(500, problem.InternalServerError())
-        return
-    }
+		c.JSON(res.Status, res)
+		return
+	}
 
-    c.JSON(200, data)
+	c.JSON(200, data)
 }

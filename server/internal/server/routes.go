@@ -1,21 +1,26 @@
 package server
 
 import (
-	"nashor/internal/handlers"
 	"github.com/gin-gonic/gin"
+	"nashor/internal/handlers"
 )
 
 func RegisterRoutes(r *gin.Engine) {
-    api := r.Group("/api/v1")
-    {
-        acc := api.Group("/account")
-        {
-            acc.GET("/by-riot-id/:gameName/:tagLine", handlers.AccountByRiotIdHandler)
-        }
+	api := r.Group("/api/v1")
+	{
+		a := api.Group("/account")
+		{
+			a.GET("/by-riot-id/:gameName/:tagLine", handlers.HandleGetAccountByRiotID)
+		}
 
-        sum := api.Group("/summoner")
-        {
-            sum.GET("/by-puuid/:puuid", handlers.SummonerByPuuid)
-        }
-    }
+		s := api.Group("/summoner")
+		{
+			s.GET("/by-puuid/:puuid", handlers.HandleGetSummonerById)
+		}
+
+		l := api.Group("/league")
+		{
+			l.GET("/entries/by-id/:summonerId", handlers.HandleGetLeagueEntriesById)
+		}
+	}
 }
