@@ -3,9 +3,9 @@ package server
 import "github.com/gin-gonic/gin"
 
 func Run() {
-    router := gin.Default()
+	router := gin.Default()
 
-    RegisterRoutes(router)
+	RegisterRoutes(router)
 
-    router.Run()
+	router.Run()
 }

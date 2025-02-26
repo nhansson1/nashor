@@ -7,9 +7,12 @@ import (
 )
 
 func HandleGetSummonerById(c *gin.Context) {
-	puuid := c.Param("puuid")
+	var (
+		puuid  = c.Param("puuid")
+		region = c.Param("region")
+	)
 
-	data, err := services.GetSummonerByPuuid(puuid)
+	data, err := services.GetSummonerByPuuid(region, puuid)
 
 	if err != nil {
 		res := helpers.HttpResFromErr(err)

@@ -7,6 +7,7 @@ import (
 	"io"
 	"nashor/internal/problem"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 )
@@ -22,8 +23,14 @@ func HttpResFromErr(err error) problem.ErrorResponse {
 	return problem.InternalServerError()
 }
 
-func CreateRequest(endpoint string, headers map[string]string) (*http.Response, error) {
-	req, err := http.NewRequest("GET", endpoint, nil)
+func CreateRequest(h, p string, headers map[string]string) (*http.Response, error) {
+	u := &url.URL{
+		Scheme: "https",
+		Host:   h,
+		Path:   p,
+	}
+
+	req, err := http.NewRequest("GET", u.String(), nil)
 
 	if err != nil {
 		fmt.Println("Failed to create request.")

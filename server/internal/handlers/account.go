@@ -4,13 +4,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"nashor/internal/helpers"
 	"nashor/internal/services"
+	"os"
 )
 
 func HandleGetAccountByRiotID(c *gin.Context) {
-	gameName := c.Param("gameName")
-	tagLine := c.Param("tagLine")
+	var (
+		gameName = c.Param("gameName")
+		tagLine  = c.Param("tagLine")
+	)
 
-	data, err := services.GetAccountByRiotId(gameName, tagLine)
+	data, err := services.GetAccountByRiotId(os.Getenv("REGION"), gameName, tagLine)
 
 	if err != nil {
 		res := helpers.HttpResFromErr(err)

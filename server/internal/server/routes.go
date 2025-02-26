@@ -15,12 +15,12 @@ func RegisterRoutes(r *gin.Engine) {
 
 		s := api.Group("/summoner")
 		{
-			s.GET("/by-puuid/:puuid", handlers.HandleGetSummonerById)
+			s.GET("/by-puuid/:region/:puuid", handlers.HandleGetSummonerById)
 		}
 
 		l := api.Group("/league")
 		{
-			l.GET("/entries/by-id/:summonerId", handlers.HandleGetLeagueEntriesById)
+			l.GET("/entries/by-id/:region/:summonerId", handlers.HandleGetLeagueEntriesById)
 		}
 	}
 }

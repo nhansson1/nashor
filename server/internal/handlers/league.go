@@ -7,9 +7,12 @@ import (
 )
 
 func HandleGetLeagueEntriesById(c *gin.Context) {
-	summonerId := c.Param("summonerId")
+	var (
+		region     = c.Param("region")
+		summonerId = c.Param("summonerId")
+	)
 
-	data, err := services.GetRankQueusById(summonerId)
+	data, err := services.GetRankQueusById(region, summonerId)
 
 	if err != nil {
 		res := helpers.HttpResFromErr(err)
