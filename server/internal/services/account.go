@@ -2,12 +2,10 @@ package services
 
 import (
 	"fmt"
+	"nashor/internal/helpers"
 )
 
-const (
-	accountBase     = "/riot/account/v1/accounts"
-	accountByRiotId = accountBase + "/by-riot-id"
-)
+const accountBase = "/riot/account/v1/accounts"
 
 type AccountDto struct {
 	Puuid    string `json:"puuid"`
@@ -16,8 +14,9 @@ type AccountDto struct {
 }
 
 func GetAccountByRiotId(region, gameName, tagLine string) (AccountDto, error) {
-	endpoint := fmt.Sprint(accountByRiotId, "/"+gameName, "/"+tagLine)
-	data, err := GetEndpointJson[AccountDto](region, endpoint)
+	u := helpers.CreateRiotUrl(region, fmt.Sprintf(accountBase+"/by-riot-id/%s/%s", gameName, tagLine), nil)
+
+	data, err := GetEndpointJson[AccountDto](u)
 
 	if err != nil {
 		return data, err

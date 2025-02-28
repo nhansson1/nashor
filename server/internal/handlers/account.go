@@ -2,21 +2,23 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
-	"nashor/internal/helpers"
+	"nashor/internal/problem"
 	"nashor/internal/services"
 	"os"
 )
 
 func HandleGetAccountByRiotID(c *gin.Context) {
 	var (
+		region   = os.Getenv("REGION")
 		gameName = c.Param("gameName")
 		tagLine  = c.Param("tagLine")
 	)
 
-	data, err := services.GetAccountByRiotId(os.Getenv("REGION"), gameName, tagLine)
+	data, err := services.GetAccountByRiotId(region, gameName, tagLine)
 
 	if err != nil {
-		res := helpers.HttpResFromErr(err)
+		var res problem.ErrorResponse
+		res.FromErr(err)
 
 		c.JSON(res.Status, res)
 		return

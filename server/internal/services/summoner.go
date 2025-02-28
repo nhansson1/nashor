@@ -2,7 +2,7 @@ package services
 
 import (
 	"fmt"
-	"nashor/internal/problem"
+	"nashor/internal/helpers"
 )
 
 type SummonerDto struct {
@@ -14,17 +14,15 @@ type SummonerDto struct {
 	SummonerLevel int    `json:"summonerLevel"`
 }
 
-const (
-	summonerBase    = "/lol/summoner/v4/summoners"
-	summonerByPuuid = summonerBase + "/by-puuid"
-)
+const summonerBase = "/lol/summoner/v4/summoners"
 
 func GetSummonerByPuuid(region, puuid string) (SummonerDto, error) {
-	endpoint := fmt.Sprint(summonerByPuuid, "/"+puuid)
-	data, err := GetEndpointJson[SummonerDto](region, endpoint)
+	u := helpers.CreateRiotUrl(region, fmt.Sprintf(summonerBase+"/by-puuid/%s", puuid), nil)
+
+	data, err := GetEndpointJson[SummonerDto](u)
 
 	if err != nil {
-		return data, problem.InternalServerError()
+		return data, err
 	}
 
 	return data, nil

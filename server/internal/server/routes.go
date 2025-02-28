@@ -22,5 +22,9 @@ func RegisterRoutes(r *gin.Engine) {
 		{
 			l.GET("/entries/by-id/:region/:summonerId", handlers.HandleGetLeagueEntriesById)
 		}
+		m := api.Group("/matches")
+		{
+			m.GET("by-puuid/:puuid/:start/:count", handlers.HandleGetMatchesByPuuid)
+		}
 	}
 }

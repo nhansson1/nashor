@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
-	"nashor/internal/helpers"
+	"nashor/internal/problem"
 	"nashor/internal/services"
 )
 
@@ -15,7 +15,8 @@ func HandleGetSummonerById(c *gin.Context) {
 	data, err := services.GetSummonerByPuuid(region, puuid)
 
 	if err != nil {
-		res := helpers.HttpResFromErr(err)
+		var res problem.ErrorResponse
+		res.FromErr(err)
 
 		c.JSON(res.Status, res)
 		return

@@ -2,10 +2,8 @@ package helpers
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
-	"nashor/internal/problem"
 	"net/http"
 	"net/url"
 	"os"
@@ -14,22 +12,25 @@ import (
 
 var httpClient = &http.Client{Timeout: 10 * time.Second}
 
-func HttpResFromErr(err error) problem.ErrorResponse {
-	var perr problem.ErrorResponse
-	if errors.As(err, &perr) {
-		return perr
-	}
-
-	return problem.InternalServerError()
-}
-
-func CreateRequest(h, p string, headers map[string]string) (*http.Response, error) {
+func CreateRiotUrl(base, endpoint string, queries map[string]string) *url.URL {
 	u := &url.URL{
 		Scheme: "https",
-		Host:   h,
-		Path:   p,
+		Host:   fmt.Sprint(base, ".api.riotgames.com"),
+		Path:   endpoint,
 	}
 
+	q := u.Query()
+
+	for k, v := range queries {
+		q.Add(k, v)
+	}
+
+	u.RawQuery = q.Encode()
+
+	return u
+}
+
+func MakeRequest(u *url.URL, headers map[string]string) (*http.Response, error) {
 	req, err := http.NewRequest("GET", u.String(), nil)
 
 	if err != nil {

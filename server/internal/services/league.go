@@ -1,6 +1,9 @@
 package services
 
-import "fmt"
+import (
+	"fmt"
+	"nashor/internal/helpers"
+)
 
 type MiniSeriesDto struct {
 	Losses   int    `json:"losses"`
@@ -32,8 +35,9 @@ const (
 )
 
 func GetRankQueusById(region, summonerId string) ([]LeagueEntryDto, error) {
-	endpoint := fmt.Sprint(entriesBySummoner, "/"+summonerId)
-	data, err := GetEndpointJson[[]LeagueEntryDto](region, endpoint)
+	u := helpers.CreateRiotUrl(region, fmt.Sprintf(leagueBase+"/entries/by-summoner/%s", summonerId), nil)
+
+	data, err := GetEndpointJson[[]LeagueEntryDto](u)
 
 	if err != nil {
 		return data, err
