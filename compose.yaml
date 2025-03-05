@@ -1,0 +1,7 @@
+services:
+  backend:
+    build: ./server
+    ports:
+      - "8080:8080"
+  cache:
+    image: "redis:alpine" 
