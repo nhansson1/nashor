@@ -8,42 +8,70 @@ import (
 
 const matchBase = "/lol/match/v5/matches"
 
-func GetMatchIdsByPuuid(region, puuid, start, count string) ([]string, error) {
-	u := helpers.CreateRiotUrl(region, fmt.Sprintf(matchBase+"/by-puuid/%s/ids", puuid), map[string]string{
-		"start": start,
-		"count": count,
-	})
+type MatchService struct {
+    riotClient *RiotClient
+}
 
-	ids, err := GetEndpointJson[[]string](u)
+func NewMatchService(rc *RiotClient) MatchService {
+    return MatchService{
+        riotClient: rc,
+    }
+}
+
+func (s MatchService) GetMatchIdsByPuuid(server, puuid, start, count string) ([]string, error) {
+    queries := make(map[string]string)
+    var ids []string
+
+    queries["count"] = count
+    queries["start"] = start
+
+	resp, err := s.riotClient.Get(helpers.GetRegionFromServer(server), fmt.Sprintf(matchBase + "/by-puuid/%s/ids", puuid), queries)
 
 	if err != nil {
 		return nil, err
 	}
 
+    defer resp.Body.Close()
+
+    ids, err = helpers.ParseBody[[]string](resp.Body)
+
+    if err != nil {
+        return nil, err
+    }
+
 	return ids, nil
 }
 
-func GetMatchDataById(region, id string, ch chan<- MatchDto, wg *sync.WaitGroup) {
+func (s MatchService) GetMatchDataById(server, id string, ch chan MatchDto, wg *sync.WaitGroup) {
 	defer wg.Done()
-	u := helpers.CreateRiotUrl(region, fmt.Sprintf(matchBase+"/%s", id), nil)
-	data, _ := GetEndpointJson[MatchDto](u)
+    var d MatchDto
 
-	ch <- data
+    resp, err := s.riotClient.Get(helpers.GetRegionFromServer(server), fmt.Sprintf(matchBase + "/%s", id), nil)
+
+    if err != nil {
+        return
+    }
+
+    defer resp.Body.Close()
+
+    d, _= helpers.ParseBody[MatchDto](resp.Body)
+
+	ch <- d 
 }
 
-func GetMatchDataByIds(region string, ids []string) ([]MatchDto, error) {
+func (s MatchService) GetMatchDataByIds(server string, ids []string) ([]MatchDto, error) {
 	ch := make(chan MatchDto)
 	var wg sync.WaitGroup
 
 	for _, id := range ids {
 		wg.Add(1)
-		go GetMatchDataById(region, id, ch, &wg)
+		go s.GetMatchDataById(server, id, ch, &wg)
 	}
 
 	go func() {
-		wg.Wait()
-		close(ch)
-	}()
+        wg.Wait()
+	    close(ch)
+    }()
 
 	matches := make([]MatchDto, 0)
 	for r := range ch {
@@ -253,7 +281,7 @@ type ObjectiveDto struct {
 }
 
 type ChallengesDto struct {
-    AssistStreakCount                     int     `json:"assistStreakCount"`
+    AssistStreakCount                     int     `json:"12AssistStreakCount"`
     BaronBuffGoldAdvantageOverThreshold   int     `json:"baronBuffGoldAdvantageOverThreshold"`
     ControlWardTimeCoverageInRiverOrEnemyHalf float64 `json:"controlWardTimeCoverageInRiverOrEnemyHalf"`
     EarliestBaron                         int     `json:"earliestBaron"`
@@ -363,16 +391,15 @@ type ChallengesDto struct {
     SkillshotsHit                        int     `json:"skillshotsHit"`
     SnowballsHit                         int     `json:"snowballsHit"`
     SoloBaronKills                       int     `json:"soloBaronKills"`
-    SwarmDefeatAatrox                    int     `json:"swarmDefeatAatrox"`
-    SwarmDefeatBriar                     int     `json:"swarmDefeatBriar"`
-    SwarmDefeatMiniBosses                int     `json:"swarmDefeatMiniBosses"`
-    SwarmEvolveWeapon                    int     `json:"swarmEvolveWeapon"`
-    SwarmHave3Passives                   int     `json:"swarmHave3Passives"`
-    SwarmKillEnemy                       int     `json:"swarmKillEnemy"`
-    SwarmPickupGold                      float64 `json:"swarmPickupGold"`
-    SwarmReachLevel50                    int     `json:"swarmReachLevel50"`
-    SwarmSurvive15Min                    int     `json:"swarmSurvive15Min"`
-    SwarmWinWith5EvolvedWeapons          int     `json:"swarmWinWith5EvolvedWeapons"`
+    SwarmDefeatAatrox                    int     `json:"SWARM_DefeatAatrox"`
+    SwarmDefeatBriar                     int     `json:"SWARM_DefeatBriar"`
+    SwarmDefeatMiniBosses                int     `json:"SWARM_DefeatMiniBosses"`
+    SwarmEvolveWeapon                    int     `json:"SWARM_EvolveWeapon"`
+    SwarmKillEnemy                       int     `json:"SWARM_KillEnemy"`
+    SwarmPickupGold                      float64 `json:"SWARM_PickupGold"`
+    SwarmReachLevel50                    int     `json:"SWARM_ReachLevel50"`
+    SwarmSurvive15Min                    int     `json:"SWARM_Survive15Min"`
+    SwarmWinWith5EvolvedWeapons          int     `json:"SWARM_WinWith5EvolvedWeapons"`
     SoloKills                            int     `json:"soloKills"`
     StealthWardsPlaced                   int     `json:"stealthWardsPlaced"`
     SurvivedSingleDigitHpCount           int     `json:"survivedSingleDigitHpCount"`

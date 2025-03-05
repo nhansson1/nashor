@@ -1,21 +1,19 @@
-package handlers
+package handler
 
 import (
-	"github.com/gin-gonic/gin"
-	"nashor/internal/problem"
-	"nashor/internal/services"
-	"os"
+    "nashor/internal/problem"
+    "github.com/gin-gonic/gin"
 )
 
-func HandleGetMatchesByPuuid(c *gin.Context) {
+func (h Handler) HandleGetMatchesByPuuid(c *gin.Context) {
 	var (
-		region = os.Getenv("REGION")
+        server = c.Param("server")
 		puuid  = c.Param("puuid")
 		start  = c.Param("start")
 		count  = c.Param("count")
 	)
 
-	ids, err := services.GetMatchIdsByPuuid(region, puuid, start, count)
+	ids, err := h.matchService.GetMatchIdsByPuuid(server, puuid, start, count)
 
 	if err != nil {
 		var perr problem.ErrorResponse
@@ -25,7 +23,7 @@ func HandleGetMatchesByPuuid(c *gin.Context) {
 		return
 	}
 
-	matches, err := services.GetMatchDataByIds(region, ids)
+	matches, err := h.matchService.GetMatchDataByIds(server, ids)
 
 	if err != nil {
 		var perr problem.ErrorResponse
@@ -37,3 +35,5 @@ func HandleGetMatchesByPuuid(c *gin.Context) {
 
 	c.JSON(200, matches)
 }
+
+

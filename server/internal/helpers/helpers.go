@@ -7,10 +7,9 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"time"
+	"strings"
 )
 
-var httpClient = &http.Client{Timeout: 10 * time.Second}
 
 func CreateRiotUrl(base, endpoint string, queries map[string]string) *url.URL {
 	u := &url.URL{
@@ -30,7 +29,24 @@ func CreateRiotUrl(base, endpoint string, queries map[string]string) *url.URL {
 	return u
 }
 
-func MakeRequest(u *url.URL, headers map[string]string) (*http.Response, error) {
+func GetRegionFromServer(server string) string {
+    var region string 
+
+    switch strings.ToUpper(server) {
+    case "EUW1", "EUNE", "TR", "ME1", "RU":
+        region = "EUROPE"
+    case "NA", "BR", "LAN", "LAS":
+        region = "AMERICAS"
+    case "KR", "JP":
+        region = "ASIA"
+    case "OCE", "SG2", "TW2", "VN2":
+        region = "SEA"
+    }
+
+    return region
+}
+
+func MakeRequest(client *http.Client, u *url.URL, headers map[string]string) (*http.Response, error) {
 	req, err := http.NewRequest("GET", u.String(), nil)
 
 	if err != nil {
@@ -40,7 +56,7 @@ func MakeRequest(u *url.URL, headers map[string]string) (*http.Response, error) 
 
 	req.Header.Add("X-Riot-Token", os.Getenv("API_KEY"))
 
-	resp, err := httpClient.Do(req)
+	resp, err := client.Do(req)
 
 	if err != nil {
 		return nil, err
@@ -50,12 +66,12 @@ func MakeRequest(u *url.URL, headers map[string]string) (*http.Response, error) 
 }
 
 func ParseBody[T any](respBody io.ReadCloser) (T, error) {
-	var out T
+    var out T
 
 	body, err := io.ReadAll(respBody)
 
 	if err != nil {
-		return out, fmt.Errorf("Failed to read body: %w", err)
+		return out,fmt.Errorf("Failed to read body: %w", err)
 	}
 
 	err = json.Unmarshal(body, &out)

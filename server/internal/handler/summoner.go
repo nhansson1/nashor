@@ -1,18 +1,17 @@
-package handlers
+package handler
 
 import (
-	"github.com/gin-gonic/gin"
-	"nashor/internal/problem"
-	"nashor/internal/services"
+    "nashor/internal/problem"
+    "github.com/gin-gonic/gin"
 )
 
-func HandleGetSummonerById(c *gin.Context) {
+func (h Handler) HandleGetSummonerById(c *gin.Context) {
 	var (
 		puuid  = c.Param("puuid")
 		region = c.Param("region")
 	)
 
-	data, err := services.GetSummonerByPuuid(region, puuid)
+	data, err := h.summonerService.GetSummonerByPuuid(region, puuid)
 
 	if err != nil {
 		var res problem.ErrorResponse

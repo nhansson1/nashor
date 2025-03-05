@@ -34,14 +34,31 @@ const (
 	entriesBySummoner = leagueBase + "/entries/by-summoner"
 )
 
-func GetRankQueusById(region, summonerId string) ([]LeagueEntryDto, error) {
-	u := helpers.CreateRiotUrl(region, fmt.Sprintf(leagueBase+"/entries/by-summoner/%s", summonerId), nil)
+type LeagueService struct {
+    riotCient *RiotClient
+}
 
-	data, err := GetEndpointJson[[]LeagueEntryDto](u)
+func NewLeagueService(rc *RiotClient) LeagueService {
+    return LeagueService {
+        riotCient: rc,
+    }
+}
+
+func (s *LeagueService) GetRankQueusById(region, summonerId string) ([]LeagueEntryDto, error) {
+    var out []LeagueEntryDto
+	resp, err := s.riotCient.Get(region, fmt.Sprintf(leagueBase + "/entries/by-summoner/%s", summonerId), nil)
 
 	if err != nil {
-		return data, err
+		return out, err
 	}
 
-	return data, nil
+    defer resp.Body.Close()
+
+    out, err = helpers.ParseBody[[]LeagueEntryDto](resp.Body)
+
+    if err != nil {
+        return out, err
+    }
+
+	return out, nil
 }

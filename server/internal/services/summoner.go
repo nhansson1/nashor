@@ -16,14 +16,32 @@ type SummonerDto struct {
 
 const summonerBase = "/lol/summoner/v4/summoners"
 
-func GetSummonerByPuuid(region, puuid string) (SummonerDto, error) {
-	u := helpers.CreateRiotUrl(region, fmt.Sprintf(summonerBase+"/by-puuid/%s", puuid), nil)
+type SummonerService struct {
+    riotClient *RiotClient
+}
 
-	data, err := GetEndpointJson[SummonerDto](u)
+func NewSummonerService(rc *RiotClient) SummonerService {
+    return SummonerService{
+        riotClient: rc,
+    }
+}
+
+func (s SummonerService) GetSummonerByPuuid(region, puuid string) (SummonerDto, error) {
+    var summoner SummonerDto
+
+	resp, err := s.riotClient.Get(region, fmt.Sprintf(summonerBase + "/by-puuid/%s", puuid), nil)
 
 	if err != nil {
-		return data, err
+		return summoner, err
 	}
 
-	return data, nil
+    defer resp.Body.Close()
+
+    summoner, err = helpers.ParseBody[SummonerDto](resp.Body)
+
+    if err != nil {
+        return summoner, err 
+    }
+
+	return summoner, nil
 }
