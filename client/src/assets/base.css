@@ -1,0 +1,21 @@
+:root {
+  --background: #0e1116;
+  --foreground: #171a21;
+  --col-defeat: #a62639;
+  --col-accent: #5158bb;
+
+  --margin-base: 0.5rem;
+  --margin-small: 0.25rem;
+  --margin-large: 0.75rem;
+  --margin-xl: 1rem;
+  --padding-base: 0.5rem;
+  --rounding-base: 0.125rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}

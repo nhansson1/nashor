@@ -1,14 +1,20 @@
 package server
 
 import (
-	"os"
 	"nashor/internal/handler"
 	"nashor/internal/services"
+	"os"
+
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func Run() {
 	router := gin.New()
+
+	cors := cors.Default()
+	
+	router.Use(cors)
 
     rc := services.NewRiotClient(os.Getenv("API_KEY"), os.Getenv("REGION"))
 

@@ -1,0 +1,13 @@
+@import "./base.css";
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+body,
+#app {
+  min-height: fit-content;
+  font-family: "Roboto", sans-serif;
+}
+
+#app {
+  background-color: var(--background);
+}

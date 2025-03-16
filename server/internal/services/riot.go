@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"nashor/internal/helpers"
 	"nashor/internal/problem"
-	"nashor/internal/rate-limiter"
+	ratelimiter "nashor/internal/rate-limiter"
 	"nashor/internal/storage"
 	"net/http"
 	"strings"

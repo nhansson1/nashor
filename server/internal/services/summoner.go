@@ -7,7 +7,7 @@ import (
 
 type SummonerDto struct {
 	AccountId     string `json:"accountId"`
-	ProfileIconId int    `json:"profileIcondId"`
+	ProfileIconId int    `json:"profileIconId"`
 	RevisionDate  int    `json:"revisionDate"`
 	SummonerId    string `json:"id"`
 	Puuid         string `json:"puuid"`
