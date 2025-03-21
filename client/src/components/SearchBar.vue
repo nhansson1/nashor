@@ -128,6 +128,16 @@ const handleSubmit = async (e: Event) => {
   font-size: clamp(0.5rem, 3vw, 1.25rem);
 }
 
+.searchbar__region {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.searchbar__input {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
 .searchbar--header .searchbar__input,
 .searchbar--header .searchbar__region {
   background-color: var(--background);

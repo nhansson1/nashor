@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
-
 import Container from "@/components/ui/Container.vue";
 
 const props = defineProps<{ riotId: string; profileIconId: number }>();
