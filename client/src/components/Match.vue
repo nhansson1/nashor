@@ -65,7 +65,7 @@ const handleOpen = () => {
 </script>
 
 <template>
-    <div class="container">
+    <div class="match-history__match-block">
         <div class="match">
             <div :class="['match__bar', `match__bar--${matchOutcome}`]"></div>
             <div class="match__container">
@@ -90,7 +90,7 @@ const handleOpen = () => {
 </template>
 
 <style scoped>
-.container {
+.match-history__match-block {
     background-color: var(--background);
 }
 

@@ -3,6 +3,7 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import Match from "@/components/Match.vue";
+import Button from "@/components/ui/Button.vue";
 import type { IMatch } from "@/types/match";
 
 const route = useRoute();
@@ -32,6 +33,8 @@ const getMatches = async (start: number) => {
                 (a, b) => b.info.gameEndTimestamp - a.info.gameEndTimestamp
             ),
         ];
+
+        console.log(matches.value);
     } catch (err) {
         console.log(err);
     }
@@ -44,12 +47,8 @@ watch(() => props.puuid, getMatches.bind(null, 0), {
 
 <template>
     <div class="match-history">
-        <Match
-            v-for="match in matches"
-            :match="match"
-            :puuid="puuid"
-            :key="match.metadata.matchId"
-        />
+        <Match v-for="match in matches" :match="match" :puuid="puuid" :key="match.metadata.matchId" />
+        <Button @button-click="() => getMatches(matches.length)" text="load more" />
     </div>
 </template>
 
@@ -62,5 +61,9 @@ watch(() => props.puuid, getMatches.bind(null, 0), {
     flex: 1;
     padding: 0.5rem;
     gap: 0.5rem;
+}
+
+.match-history .button:last-child {
+    align-self: center;
 }
 </style>
