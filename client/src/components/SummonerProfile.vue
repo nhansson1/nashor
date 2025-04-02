@@ -4,6 +4,21 @@ import RankedContainer from "@/components/RankedContainer.vue";
 import SummonerContainer from "@/components/SummonerContainer.vue";
 
 const props = defineProps<{ summonerData: SummonerData }>();
+
+if (props.summonerData.ranks.length !== 2) {
+    const rankDefaults = { freshBlood: false, hotStreak: false, inactive: false, leagueId: "", leaguePoints: 0, losses: 0, puuid: "", rank: "", summonerId: "", tier: "Unranked", veteran: false, wins: 0 };
+    props.summonerData.ranks = [props.summonerData.ranks[0], props.summonerData.ranks[1]].map((rankEntry, index, arr) => {
+        if (rankEntry)
+            return rankEntry;
+
+        const otherRank = index === arr.length - 1 ? arr[0] : arr[1];
+
+        if (!otherRank)
+            return { queueType: index === 0 ? "RANKED_SOLO_5x5" : "RANKED_FLEX_SR", ...rankDefaults };
+
+        return { queueType: otherRank?.queueType === "RANKED_SOLO_5x5" ? "RANKED_FLEX_SR" : "RANKED_SOLO_5x5", ...rankDefaults };
+    });
+}
 const riotId = `${props.summonerData.account.gameName}#${props.summonerData.account.tagLine}`;
 
 </script>
