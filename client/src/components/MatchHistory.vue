@@ -40,7 +40,7 @@ const getMatches = async (start: number) => {
     }
 };
 
-watch(() => props.puuid, getMatches.bind(null, 0), {
+watch(() => props.puuid, () => { matches.value = []; getMatches(0); }, {
     immediate: true,
 });
 </script>
