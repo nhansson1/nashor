@@ -37,7 +37,7 @@ const creepScore =
             <p>{{ creepScore }}</p>
             <p>{{ getGoldEarnedString(participant) }}</p>
         </div>
-        <ItemContainer :small="true" :foreground="true" :items="items" />
+        <ItemContainer :small="true" :foreground="false" :items="items" />
     </div>
 </template>
 

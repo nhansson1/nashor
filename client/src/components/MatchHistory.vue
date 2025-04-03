@@ -33,8 +33,6 @@ const getMatches = async (start: number) => {
                 (a, b) => b.info.gameEndTimestamp - a.info.gameEndTimestamp
             ),
         ];
-
-        console.log(matches.value);
     } catch (err) {
         console.log(err);
     }

@@ -12,11 +12,7 @@ const itemSources = props.items.map((item) =>
 
 <template>
     <div class="item-container">
-        <Icon
-            :class="{ 'icon--foreground': foreground }"
-            v-for="itemSrc in itemSources"
-            :icon-src="itemSrc"
-        />
+        <Icon :class="{ 'icon--foreground': foreground }" v-for="itemSrc in itemSources" :icon-src="itemSrc" />
     </div>
 </template>
 
