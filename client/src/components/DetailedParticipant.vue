@@ -16,7 +16,7 @@ const stats = [
     props.participant.assists,
 ].join("/");
 const items = getParticipantItems(props.participant);
-const champIconSrc = `https://cdn.nashor.gg/assets/15.5.1/img/champion/${props.participant.championName}.png`;
+const champIconSrc = `https://cdn.nashor.gg/assets/15.7.1/img/champion/${props.participant.championName}.png`;
 const creepScore =
     props.participant.totalMinionsKilled +
     props.participant.neutralMinionsKilled;

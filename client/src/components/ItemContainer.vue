@@ -6,7 +6,7 @@ const props = defineProps<{
 }>();
 
 const itemSources = props.items.map((item) =>
-    item ? `https://cdn.nashor.gg/assets/15.5.1/img/item/${item}.png` : ""
+    item ? `https://cdn.nashor.gg/assets/15.7.1/img/item/${item}.png` : ""
 );
 </script>
 

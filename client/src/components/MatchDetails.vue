@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import Divider from "@/components/ui/Divider.vue";
-const props = defineProps<{
+import { getQueueNameById } from "@/utils/league-utils";
+defineProps<{
     matchOutcome: string;
     timeSinceMatch: string;
     matchDuration: string;
+    queueId: number;
 }>();
 </script>
 
 <template>
     <div class="match__details">
-        <p :class="['match__outcome', `match__outcome--${props.matchOutcome}`]">
+        <p :class="['match__outcome', `match__outcome--${matchOutcome}`]">
             {{ matchOutcome }}
         </p>
         <p class="match__time-since">{{ timeSinceMatch }}</p>
         <Divider />
-        <p class="match__queue-type">Ranked Solo</p>
+        <p class="match__queue-type">{{ getQueueNameById(queueId) }}</p>
         <p class="match__duration">{{ matchDuration }}</p>
     </div>
 </template>
@@ -52,6 +54,13 @@ const props = defineProps<{
 
 .match__outcome--defeat {
     color: var(--col-defeat);
+}
+
+.match__queue-type {
+    width: 10ch;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @media screen and (min-width: 1024px) {
