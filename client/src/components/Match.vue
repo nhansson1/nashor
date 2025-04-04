@@ -74,8 +74,8 @@ const handleOpen = () => {
                 <div class="match__body">
                     <MatchDetails :match-outcome="matchOutcome" :match-duration="matchDuration"
                         :time-since-match="timeSinceMatch" :queue-id="match.info.queueId" />
-                    <SummonerData :champion-name="targetSummoner.championName"
-                        :summoner1-id="targetSummoner.summoner1Id" :summoner2-id="targetSummoner.summoner2Id"
+                    <SummonerData :champion-id="targetSummoner.championId" :summoner1-id="targetSummoner.summoner1Id"
+                        :summoner2-id="targetSummoner.summoner2Id"
                         :perk1-id="targetSummoner.perks.styles[0].selections[0].perk"
                         :perk2-id="targetSummoner.perks.styles[1].style" />
                     <PlayerStats :stats="targetStats" :kd="targetKd" :creep-score="targetCreepScoreString"

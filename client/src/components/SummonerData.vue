@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { getChampionKeyById } from '@/utils/league-utils';
+import Icon from './ui/Icon.vue';
 import { getPerkSource, getSummonerSource } from '@/utils/participant-utils';
 
-const props = defineProps<{ championName: string, summoner1Id: number, summoner2Id: number, perk1Id: number, perk2Id: number }>();
-const championIcon = `https://cdn.nashor.gg/assets/15.7.1/img/champion/${props.championName}.png`;
+const props = defineProps<{ championId: number, summoner1Id: number, summoner2Id: number, perk1Id: number, perk2Id: number }>();
+const championIcon = `https://cdn.nashor.gg/assets/15.7.1/img/champion/${getChampionKeyById(props.championId)}.png`;
 const summoner1 = getSummonerSource(props.summoner1Id);
 const summoner2 = getSummonerSource(props.summoner2Id);
 const perk1 = getPerkSource(props.perk1Id);
@@ -30,19 +32,10 @@ const perkSources = [perk1, perk2].map(perk => {
             <img class="match__champ-icon" :src="championIcon" alt="champion-icon" />
         </div>
         <div class="match__summoner-icons">
-            <div class="match__summoner-icon-container">
-                <img class="match__summoner-icon" :src="summonerSources[0]" alt="icon">
-            </div>
-            <div class="match__summoner-icon-container">
-                <img class="match__summoner-icon" :src="perkSources[0]" alt="icon">
-            </div>
-
-            <div class="match__summoner-icon-container">
-                <img class="match__summoner-icon" :src="summonerSources[1]" alt="icon">
-            </div>
-            <div class="match__summoner-icon-container">
-                <img class="match__summoner-icon" :src="perkSources[1]" alt="icon">
-            </div>
+            <Icon class="icon--medium" :icon-src="summonerSources[0]" />
+            <Icon class="icon--foreground icon--medium" :icon-src="perkSources[0]" />
+            <Icon class="icon--medium" :icon-src="summonerSources[1]" />
+            <Icon class="icon--foreground icon--medium" :icon-src="perkSources[1]" />
         </div>
     </div>
 </template>
@@ -61,16 +54,10 @@ const perkSources = [perk1, perk2].map(perk => {
     overflow: hidden;
 }
 
-.match__champ-icon,
-.match__perk-icon,
-.match__summoner-icon {
+.match__champ-icon {
     height: 100%;
     object-fit: cover;
     transform: scale(1.1);
-}
-
-.match__summoner-icon {
-    transform: none;
 }
 
 .match__summoner-icons {

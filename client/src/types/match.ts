@@ -1,5 +1,6 @@
 export interface IParticipant {
     championName: string;
+    championId: number;
     puuid: string;
     kills: number;
     deaths: number;

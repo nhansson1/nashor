@@ -5,7 +5,8 @@ defineProps<{ iconSrc?: string }>();
 <!-- modifier classes: small, medium, foreground -->
 <template>
     <div class="icon">
-        <img v-if="iconSrc" class="icon__img" :src="iconSrc" alt="icon" />
+        <img @mouseenter="$emit('mEnter')" @mouseleave="$emit('mLeave')" v-if="iconSrc" class="icon__img" :src="iconSrc"
+            alt="icon" />
     </div>
 </template>
 
@@ -22,13 +23,13 @@ defineProps<{ iconSrc?: string }>();
 }
 
 .icon--medium {
-    width: 0.8rem;
-    height: 0.8rem;
+    width: clamp(1rem, 1vw, 1.225rem);
+    height: clamp(1rem, 1vw, 1.225rem);
 }
 
 .icon--small {
-    width: .925rem;
-    height: .925rem;
+    width: .8rem;
+    height: .8rem;
 }
 
 .icon__img {

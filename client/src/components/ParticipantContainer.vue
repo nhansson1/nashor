@@ -15,7 +15,7 @@ const team2 = props.participants.slice(props.participants.length / 2);
     <div class="participant-container">
         <div class="participant-container__team">
             <div class="participant-container__participant" v-for="participant in team1">
-                <Icon class="icon--medium"
+                <Icon class="icon--small"
                     :icon-src="`https://cdn.nashor.gg/assets/15.7.1/img/champion/${participant.championName}.png`" />
                 <p :class="{
                     'participant-container__name': true,
@@ -28,7 +28,7 @@ const team2 = props.participants.slice(props.participants.length / 2);
         </div>
         <div class="participant-container__team">
             <div class="participant-container__participant" v-for="participant in team2">
-                <Icon class="icon--medium"
+                <Icon class="icon--small"
                     :icon-src="`https://cdn.nashor.gg/assets/15.7.1/img/champion/${participant.championName}.png`" />
                 <p :class="{
                     'participant-container__name': true,
@@ -60,6 +60,7 @@ const team2 = props.participants.slice(props.participants.length / 2);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-left: var(--margin-small);
 }
 
 .participant-container__participant--target {

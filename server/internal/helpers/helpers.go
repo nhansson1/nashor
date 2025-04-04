@@ -10,7 +10,6 @@ import (
 	"strings"
 )
 
-
 func CreateRiotUrl(base, endpoint string, queries map[string]string) *url.URL {
 	u := &url.URL{
 		Scheme: "https",
@@ -30,20 +29,20 @@ func CreateRiotUrl(base, endpoint string, queries map[string]string) *url.URL {
 }
 
 func GetRegionFromServer(server string) string {
-    var region string 
+	var region string
 
-    switch strings.ToUpper(server) {
-    case "EUW1", "EUNE", "TR", "ME1", "RU":
-        region = "EUROPE"
-    case "NA", "BR", "LAN", "LAS":
-        region = "AMERICAS"
-    case "KR", "JP":
-        region = "ASIA"
-    case "OCE", "SG2", "TW2", "VN2":
-        region = "SEA"
-    }
+	switch strings.ToUpper(server) {
+	case "EUW1", "EUNE", "TR", "ME1", "RU":
+		region = "EUROPE"
+	case "NA", "BR", "LAN", "LAS":
+		region = "AMERICAS"
+	case "KR", "JP":
+		region = "ASIA"
+	case "OCE", "SG2", "TW2", "VN2":
+		region = "SEA"
+	}
 
-    return region
+	return region
 }
 
 func MakeRequest(client *http.Client, u *url.URL, headers map[string]string) (*http.Response, error) {
@@ -66,12 +65,12 @@ func MakeRequest(client *http.Client, u *url.URL, headers map[string]string) (*h
 }
 
 func ParseBody[T any](respBody io.ReadCloser) (T, error) {
-    var out T
+	var out T
 
 	body, err := io.ReadAll(respBody)
 
 	if err != nil {
-		return out,fmt.Errorf("Failed to read body: %w", err)
+		return out, fmt.Errorf("Failed to read body: %w", err)
 	}
 
 	err = json.Unmarshal(body, &out)
