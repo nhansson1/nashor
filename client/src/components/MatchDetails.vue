@@ -57,7 +57,7 @@ defineProps<{
 }
 
 .match__queue-type {
-    width: 10ch;
+    width: 12ch;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

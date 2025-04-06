@@ -80,7 +80,7 @@ const handleOpen = () => {
                         :perk2-id="targetSummoner.perks.styles[1].style" />
                     <PlayerStats :stats="targetStats" :kd="targetKd" :creep-score="targetCreepScoreString"
                         :vision-score="targetVisionScoreString" :gold-earned="targetGoldEarned" />
-                    <ItemContainer :foreground="false" :items="targetItems" />
+                    <ItemContainer :items="targetItems" />
                     <ParticipantContainer :participants="match.info.participants"
                         :target-summoner-puuid="targetSummoner.puuid" />
                 </div>

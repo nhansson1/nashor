@@ -37,7 +37,7 @@ const creepScore =
             <p>{{ creepScore }}</p>
             <p>{{ getGoldEarnedString(participant) }}</p>
         </div>
-        <ItemContainer :small="true" :foreground="false" :items="items" />
+        <ItemContainer class="item-container--row" :row="true" :small="true" :items="items" />
     </div>
 </template>
 
@@ -58,7 +58,7 @@ const creepScore =
 
 .detailed-participant__name {
     max-height: 2ch;
-    width: clamp(8ch, 10vw, 10rem);
+    width: clamp(8ch, 10vw, 5rem);
     white-space: no-wrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -70,6 +70,7 @@ const creepScore =
     grid-template-columns: repeat(3, 1fr);
     place-items: center;
     flex: 1;
+    color: #ffffffa7;
 }
 
 .detailed-participant-icon-container {

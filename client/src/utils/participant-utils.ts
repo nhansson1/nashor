@@ -37,10 +37,10 @@ export const getParticipantItems = (participant: IParticipant): number[] => {
         participant.item0,
         participant.item1,
         participant.item2,
-        participant.item6,
         participant.item3,
         participant.item4,
         participant.item5,
+        participant.item6,
     ];
 };
 

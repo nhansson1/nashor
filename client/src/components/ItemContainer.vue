@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import Icon from "@/components/ui/Icon.vue";
-const props = defineProps<{
+defineProps<{
     items: number[];
-    foreground: boolean;
 }>();
 
-const itemSources = props.items.map((item) =>
-    item ? `https://cdn.nashor.gg/assets/15.7.1/img/item/${item}.png` : ""
-);
 </script>
 
 <template>
     <div class="item-container">
-        <Icon :class="{ 'icon--foreground': foreground }" v-for="itemSrc in itemSources" :icon-src="itemSrc" />
+        <Icon :class="{ 'trinket': idx === items.length - 1 }" v-for="(item, idx) in items"
+            :icon-src="item ? `https://cdn.nashor.gg/assets/15.7.1/img/item/${item}.png` : ''" />
     </div>
 </template>
 
@@ -22,5 +19,21 @@ const itemSources = props.items.map((item) =>
     grid-template-columns: repeat(4, 1fr);
     gap: var(--margin-small);
     margin: var(--margin-base);
+}
+
+.item-container .trinket {
+    grid-row: 1;
+    grid-column: 4;
+}
+
+
+@media screen and (min-width: 1024px) {
+    .item-container--row {
+        grid-template-columns: repeat(7, 1fr);
+    }
+
+    .item-container--row .trinket {
+        grid-column: 7;
+    }
 }
 </style>

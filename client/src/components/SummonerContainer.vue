@@ -23,6 +23,7 @@ const iconSrc = `https://ddragon.leagueoflegends.com/cdn/15.7.1/img/profileicon/
 .summoner-container__account {
     margin: var(--margin-base);
     font-size: clamp(0.85rem, 1vw, 1rem);
+    width: 16ch;
 }
 
 .summoner-container__profile-icon {
