@@ -15,13 +15,19 @@ const teams = [
 <template>
     <div class="detailed-participant-list">
         <div class="detailed-participant-list__team" v-for="team in teams">
-            <div>
+            <div class="detailed-participant-list__table">
                 <p :class="[
                     'detailed-participant-list__team-outcome',
                     `detailed-participant-list__team-outcome--${team[0].win ? 'victory' : 'defeat'}`,
                 ]">
                     {{ team[0].win ? "victory" : "defeat" }}
                 </p>
+                <div class="detailed-participant-list__desc">
+                    <p>KDA</p>
+                    <p>CS</p>
+                    <p>GOLD</p>
+                </div>
+                <div></div>
             </div>
             <DetailedParticipant v-for="participant in team" :match-duration="props.matchDuration"
                 :participant="participant" />
@@ -59,5 +65,20 @@ const teams = [
 
 .detailed-participant-list__team-outcome--defeat {
     color: var(--col-defeat);
+}
+
+.detailed-participant-list__table {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    color: white;
+}
+
+.detailed-participant-list__desc {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    place-items: center;
+    flex: 1;
+    color: #ffffffa7;
 }
 </style>

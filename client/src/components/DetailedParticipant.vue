@@ -6,6 +6,8 @@ import {
     getParticipantItems,
 } from "@/utils/participant-utils";
 
+import { getChampionKeyById } from "@/utils/league-utils";
+
 const props = defineProps<{
     participant: IParticipant;
     matchDuration: number;
@@ -16,10 +18,12 @@ const stats = [
     props.participant.assists,
 ].join("/");
 const items = getParticipantItems(props.participant);
-const champIconSrc = `https://cdn.nashor.gg/assets/15.7.1/img/champion/${props.participant.championName}.png`;
+const champIconSrc = `https://cdn.nashor.gg/assets/15.7.1/img/champion/${getChampionKeyById(props.participant.championId)}.png`;
 const creepScore =
     props.participant.totalMinionsKilled +
     props.participant.neutralMinionsKilled;
+
+const isMobile = window.innerWidth < 768;
 </script>
 
 <template>
@@ -37,13 +41,14 @@ const creepScore =
             <p>{{ creepScore }}</p>
             <p>{{ getGoldEarnedString(participant) }}</p>
         </div>
-        <ItemContainer class="item-container--row" :row="true" :small="true" :items="items" />
+        <ItemContainer class="item-container--row" :row="true" :items="items" />
     </div>
 </template>
 
 <style scoped>
 .detailed-participant {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     align-items: center;
     background-color: var(--background);
     border-radius: var(--rounding-base);
@@ -58,7 +63,7 @@ const creepScore =
 
 .detailed-participant__name {
     max-height: 2ch;
-    width: clamp(8ch, 10vw, 5rem);
+    width: clamp(8ch, 10vw, 75%);
     white-space: no-wrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -66,7 +71,6 @@ const creepScore =
 
 .detailed-participant__stats {
     display: grid;
-    margin: var(--margin-base);
     grid-template-columns: repeat(3, 1fr);
     place-items: center;
     flex: 1;

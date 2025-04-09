@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
     <div class="item-container">
-        <Icon :class="{ 'trinket': idx === items.length - 1 }" v-for="(item, idx) in items"
+        <Icon :class="{ 'trinket': idx === items.length - 1, }" v-for="(item, idx) in items"
             :icon-src="item ? `https://cdn.nashor.gg/assets/15.7.1/img/item/${item}.png` : ''" />
     </div>
 </template>

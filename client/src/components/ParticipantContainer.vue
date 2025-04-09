@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { IParticipant } from "@/types/match";
+import { getChampionKeyById } from "@/utils/league-utils";
 import Icon from "./ui/Icon.vue";
 
 const props = defineProps<{
@@ -16,7 +17,7 @@ const team2 = props.participants.slice(props.participants.length / 2);
         <div class="participant-container__team">
             <div class="participant-container__participant" v-for="participant in team1">
                 <Icon class="icon--small"
-                    :icon-src="`https://cdn.nashor.gg/assets/15.7.1/img/champion/${participant.championName}.png`" />
+                    :icon-src="`https://cdn.nashor.gg/assets/15.7.1/img/champion/${getChampionKeyById(participant.championId)}.png`" />
                 <p :class="{
                     'participant-container__name': true,
                     'participant-container__participant--target':
@@ -29,7 +30,7 @@ const team2 = props.participants.slice(props.participants.length / 2);
         <div class="participant-container__team">
             <div class="participant-container__participant" v-for="participant in team2">
                 <Icon class="icon--small"
-                    :icon-src="`https://cdn.nashor.gg/assets/15.7.1/img/champion/${participant.championName}.png`" />
+                    :icon-src="`https://cdn.nashor.gg/assets/15.7.1/img/champion/${getChampionKeyById(participant.championId)}.png`" />
                 <p :class="{
                     'participant-container__name': true,
                     'participant-container__participant--target':
