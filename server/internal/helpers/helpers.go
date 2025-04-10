@@ -34,7 +34,7 @@ func GetRegionFromServer(server string) string {
 	switch strings.ToUpper(server) {
 	case "EUW1", "EUNE", "TR", "ME1", "RU":
 		region = "EUROPE"
-	case "NA", "BR", "LAN", "LAS":
+	case "NA1", "BR", "LAN", "LAS":
 		region = "AMERICAS"
 	case "KR", "JP":
 		region = "ASIA"

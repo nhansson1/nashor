@@ -13,17 +13,17 @@ func Run() {
 	router := gin.New()
 
 	cors := cors.Default()
-	
+
 	router.Use(cors)
 
-    rc := services.NewRiotClient(os.Getenv("API_KEY"), os.Getenv("REGION"))
+	rc := services.NewRiotClient(os.Getenv("API_KEY"), os.Getenv("REGION"))
 
-    accountService := services.NewAccountService(rc)
-    summonerService := services.NewSummonerService(rc)
-    matchService := services.NewMatchService(rc)
-    leagueService := services.NewLeagueService(rc)
+	accountService := services.NewAccountService(rc)
+	summonerService := services.NewSummonerService(rc)
+	matchService := services.NewMatchService(rc)
+	leagueService := services.NewLeagueService(rc)
 
-    h := handler.NewHandler(&accountService, &summonerService, &matchService, &leagueService)
+	h := handler.NewHandler(&accountService, &summonerService, &matchService, &leagueService)
 	RegisterRoutes(router, &h)
 
 	router.Run()

@@ -28,7 +28,6 @@ func NewAccountService(rc *RiotClient) AccountService {
 func (s *AccountService) GetAccountByRiotId(gameName, tagLine string) (AccountDto, error) {
 	var out AccountDto
 	key := fmt.Sprint("account:", gameName, "#", tagLine)
-	fmt.Println(key)
 
 	err := s.riotClient.cache.GetJson(key, &out)
 
