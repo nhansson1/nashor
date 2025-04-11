@@ -1,15 +1,42 @@
 <script setup lang="ts">
-import Icon from "@/components/ui/Icon.vue";
-defineProps<{
+import { getItemDataById } from "@/utils/league-utils";
+import IconWithTooltip from "./IconWithTooltip.vue";
+const props = defineProps<{
     items: number[];
 }>();
+
+interface ItemData {
+    price: number;
+    name: string;
+    src: string;
+    content: string;
+}
+
+const itemData: ItemData[] = props.items.map(itemId => {
+    const itemData = { price: 0, name: "", src: "", content: "" };
+
+    if (!itemId)
+        return itemData;
+
+    const itemObj = getItemDataById(itemId);
+
+    if (!itemObj)
+        return itemData;
+
+    itemData.price = itemObj.gold.total;
+    itemData.name = itemObj.name;
+    itemData.content = itemObj.description;
+    itemData.src = `https://cdn.nashor.gg/assets/15.7.1/img/item/${itemId}.png`;
+
+    return itemData;
+});
 
 </script>
 
 <template>
     <div class="item-container">
-        <Icon :class="{ 'trinket': idx === items.length - 1, }" v-for="(item, idx) in items"
-            :icon-src="item ? `https://cdn.nashor.gg/assets/15.7.1/img/item/${item}.png` : ''" />
+        <IconWithTooltip v-for="(item, idx) in itemData" :title="item.name" :bread="item.price.toString()"
+            :icon-src="item.src" :content="item.content" :class="{ 'trinket': idx === itemData.length - 1 }" />
     </div>
 </template>
 

@@ -1,26 +1,40 @@
 <script setup lang="ts">
-import Container from './ui/Container.vue';
+import { useTemplateRef } from 'vue';
+import Icon from './ui/Icon.vue';
 defineProps<{ imageSrc?: string, title: string, bread: string, content: string, show: boolean }>();
+
+const tooltip = useTemplateRef('tooltip');
+defineExpose({
+    tooltip
+})
 </script>
 
 <template>
-    <Container v-if="show" class="tooltip">
+    <div ref="tooltip" v-if="show" class="tooltip">
         <div class="tooltip__header">
-            <img class="tooltip__image" v-if="imageSrc" :src="imageSrc" alt="">
+            <Icon :icon-src="imageSrc" />
             <div>
                 <p class="tooltip__title">{{ title }}</p>
                 <p class="tooltip__bread">{{ bread }}</p>
             </div>
         </div>
         <div v-html="content"></div>
-    </Container>
+    </div>
 </template>
 
 <style scoped>
 .tooltip {
     position: absolute;
-    right: 50%;
-    transform: translateX(-25%);
+    z-index: 10;
+    min-width: 10rem;
+    background-color: var(--foreground);
+    padding: var(--margin-base);
+    border-radius: var(--rounding-base);
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(10rem, 15vw, 20rem);
+    color: #ffffff87;
+    font-size: clamp(.60rem, 1vw, .75rem);
 }
 
 .tooltip--top {
@@ -31,19 +45,18 @@ defineProps<{ imageSrc?: string, title: string, bread: string, content: string, 
     top: 100%;
 }
 
-.tooltip__header {
-    display: flex;
+.tooltip--right {
+    transform: translateX(-100%);
 }
 
-.tooltip__image {
-    margin-right: var(--margin-base);
+.tooltip__header {
+    display: flex;
+    align-items: center;
+    gap: var(--margin-base);
+    margin-bottom: var(--margin-base);
 }
 
 .tooltip__title {
     color: #ffffff;
-}
-
-.tooltip__bread {
-    color: #ffffff87;
 }
 </style>

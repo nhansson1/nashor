@@ -4,10 +4,11 @@
 
 body,
 #app {
-  min-height: fit-content;
-  font-family: "Roboto", sans-serif;
+    min-height: fit-content;
+    font-family: "Roboto", sans-serif;
+    overflow-x: hidden;
 }
 
 #app {
-  background-color: var(--background);
+    background-color: var(--background);
 }

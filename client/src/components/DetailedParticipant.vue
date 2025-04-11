@@ -63,7 +63,7 @@ const isMobile = window.innerWidth < 768;
 
 .detailed-participant__name {
     max-height: 2ch;
-    width: clamp(8ch, 10vw, 75%);
+    width: clamp(8ch, 10vw, 6rem);
     white-space: no-wrap;
     text-overflow: ellipsis;
     overflow: hidden;

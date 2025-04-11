@@ -1,5 +1,7 @@
 import queues from "../static/queues.json";
-import champions from "../static/champion.json"
+import items from "../static/item.json";
+import champions from "../static/champion.json";
+
 export const getQueueNameById = (queueId: number): string => {
     const queue = queues.find(queue => queue.queueId === queueId);
 
@@ -17,4 +19,13 @@ export const getChampionKeyById = (championId: number): string => {
     }
 
     return championKey
+}
+
+export const getItemDataById = (id: number) => {
+    const itemObj = items.data[id.toString() as keyof typeof items.data];
+
+    if (!itemObj)
+        return null;
+
+    return itemObj;
 }

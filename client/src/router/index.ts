@@ -9,6 +9,9 @@ const router = createRouter({
         {
             path: "/",
             name: "home",
+            meta: {
+                title: "Nashor"
+            },
             component: HomeView,
         },
         {
@@ -19,5 +22,14 @@ const router = createRouter({
         },
     ],
 });
+
+router.beforeEach((to, _, next) => {
+    if (to.name === "summoner") {
+        const title = `Nashor - ${to.params.gameName}#${to.params.tagLine}`;
+
+        document.title = title;
+        next();
+    }
+})
 
 export default router;
