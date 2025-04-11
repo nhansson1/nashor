@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"log"
 	"nashor/internal/types"
 	"os"
 )
@@ -176,11 +175,7 @@ func (c *PostgresClient) GetMatchById(id string) (types.MatchDto, error) {
 func NewPostgresClient() *PostgresClient {
 	connStr := os.Getenv("DB_URI")
 
-	db, err := sqlx.Open("postgres", connStr)
-
-	if err != nil {
-		log.Fatal("Failed to connect to Postgres", err)
-	}
+	db := sqlx.MustOpen("postgres", connStr)
 
 	return &PostgresClient{
 		db: db,
