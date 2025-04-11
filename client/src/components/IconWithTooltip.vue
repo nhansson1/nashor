@@ -17,7 +17,6 @@ const handleMouseEnter = () => {
 
         if (rect) {
             const withinTop = rect.top > 0;
-            console.log(rect);
 
             tooltipClass.value = { 'tooltip--hide': false, 'tooltip--top': withinTop, 'tooltip--bottom': !withinTop, 'tooltip--right': rect.right > window.innerWidth };
         }
