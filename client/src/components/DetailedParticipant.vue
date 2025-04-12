@@ -23,7 +23,6 @@ const creepScore =
     props.participant.totalMinionsKilled +
     props.participant.neutralMinionsKilled;
 
-const isMobile = window.innerWidth < 768;
 </script>
 
 <template>
