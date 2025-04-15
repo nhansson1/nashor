@@ -2,7 +2,7 @@
 import Container from "@/components/ui/Container.vue";
 
 const props = defineProps<{ riotId: string; profileIconId: number }>();
-const iconSrc = `https://ddragon.leagueoflegends.com/cdn/15.7.1/img/profileicon/${props.profileIconId}.png`;
+const iconSrc = `${import.meta.env.VITE_ASSETS_BASE}/img/profileicon/${props.profileIconId}.png`;
 </script>
 
 <template>

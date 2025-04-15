@@ -15,7 +15,7 @@ const getMatches = async (start: number) => {
     const { region } = route.params;
 
     const url = new URL(
-        `http://localhost:8080/api/v1/matches/by-puuid/${region}/${props.puuid}/${start}/${count}`
+        `${import.meta.env.VITE_API_BASE}/matches/by-puuid/${region}/${props.puuid}/${start}/${count}`
     );
 
     try {

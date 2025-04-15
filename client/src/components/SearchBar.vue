@@ -41,7 +41,7 @@ const handleChange = (e: Event) => {
 
 const getProfile = async (gameName: string, tagLine: string): Promise<{ puuid: string, gameName: string, tagLine: string } | undefined> => {
     const url = new URL(
-        `http://localhost:8080/api/v1/account/by-riot-id/${gameName}/${tagLine}`
+        `${import.meta.env.VITE_API_BASE}/account/by-riot-id/${gameName}/${tagLine}`
     );
 
     try {

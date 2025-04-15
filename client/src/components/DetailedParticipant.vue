@@ -12,13 +12,15 @@ const props = defineProps<{
     participant: IParticipant;
     matchDuration: number;
 }>();
+
 const stats = [
     props.participant.kills,
     props.participant.deaths,
     props.participant.assists,
 ].join("/");
+
 const items = getParticipantItems(props.participant);
-const champIconSrc = `https://cdn.nashor.gg/assets/15.7.1/img/champion/${getChampionKeyById(props.participant.championId)}.png`;
+const champIconSrc = `${import.meta.env.VITE_ASSETS_BASE}/img/champion/${getChampionKeyById(props.participant.championId)}.png`;
 const creepScore =
     props.participant.totalMinionsKilled +
     props.participant.neutralMinionsKilled;

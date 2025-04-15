@@ -10,7 +10,7 @@ const rankName = `${props.rankEntry.tier[0]}${props.rankEntry.tier
     .slice(1)
     .toLowerCase()}`;
 
-const iconSrc = `https://cdn.nashor.gg/assets/rank-emblems/Rank=${rankName}.png`;
+const iconSrc = `${import.meta.env.VITE_ASSETS_BASE}/rank-emblems/Rank=${rankName}.png`;
 </script>
 
 <template>

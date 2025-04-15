@@ -4,7 +4,7 @@ import Icon from './ui/Icon.vue';
 import { getPerkSource, getSummonerSource } from '@/utils/participant-utils';
 
 const props = defineProps<{ championId: number, summoner1Id: number, summoner2Id: number, perk1Id: number, perk2Id: number }>();
-const championIcon = `https://cdn.nashor.gg/assets/15.7.1/img/champion/${getChampionKeyById(props.championId)}.png`;
+const championIcon = `${import.meta.env.VITE_ASSETS_BASE}/img/champion/${getChampionKeyById(props.championId)}.png`;
 const summoner1 = getSummonerSource(props.summoner1Id);
 const summoner2 = getSummonerSource(props.summoner2Id);
 const perk1 = getPerkSource(props.perk1Id);

@@ -26,7 +26,7 @@ const itemData: ItemData[] = props.items.map(itemId => {
     itemData.price = itemObj.gold.total;
     itemData.name = itemObj.name;
     itemData.content = itemObj.description;
-    itemData.src = `https://cdn.nashor.gg/assets/15.7.1/img/item/${itemId}.png`;
+    itemData.src = `${import.meta.env.VITE_ASSETS_BASE}/img/item/${itemId}.png`;
 
     return itemData;
 });
