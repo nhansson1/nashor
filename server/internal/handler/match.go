@@ -1,13 +1,13 @@
 package handler
 
 import (
-    "nashor/internal/problem"
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
+	"nashor/internal/problem"
 )
 
 func (h Handler) HandleGetMatchesByPuuid(c *gin.Context) {
 	var (
-        server = c.Param("server")
+		server = c.Param("server")
 		puuid  = c.Param("puuid")
 		start  = c.Param("start")
 		count  = c.Param("count")
@@ -35,5 +35,3 @@ func (h Handler) HandleGetMatchesByPuuid(c *gin.Context) {
 
 	c.JSON(200, matches)
 }
-
-

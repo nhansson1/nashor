@@ -17,7 +17,7 @@ type ParticipantDto struct {
 	GoldEarned           int      `json:"goldEarned"`
 	VisionScore          int      `json:"visionScore"`
 	RiotIdGameName       string   `json:"riotIdGameName"`
-	RiotIdTagline        string   `json:"riotIdTagline`
+	RiotIdTagline        string   `json:"riotIdTagline"`
 	SummonerName         string   `json:"summonerName"`
 	Win                  bool     `json:"win"`
 	Item0                int      `json:"item0"`

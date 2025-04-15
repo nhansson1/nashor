@@ -54,8 +54,6 @@ func (s MatchService) GetMatchDataById(server, id string, ch chan types.MatchDto
 		return
 	}
 
-	fmt.Println(m, err)
-
 	resp, err := s.riotClient.Get(helpers.GetRegionFromServer(server), fmt.Sprintf(matchBase+"/%s", id), nil)
 
 	if err != nil {
