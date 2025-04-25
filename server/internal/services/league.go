@@ -35,30 +35,30 @@ const (
 )
 
 type LeagueService struct {
-    riotCient *RiotClient
+	riotCient *RiotClient
 }
 
 func NewLeagueService(rc *RiotClient) LeagueService {
-    return LeagueService {
-        riotCient: rc,
-    }
+	return LeagueService{
+		riotCient: rc,
+	}
 }
 
 func (s *LeagueService) GetRankQueusById(region, summonerId string) ([]LeagueEntryDto, error) {
-    var out []LeagueEntryDto
-	resp, err := s.riotCient.Get(region, fmt.Sprintf(leagueBase + "/entries/by-summoner/%s", summonerId), nil)
+	var out []LeagueEntryDto
+	resp, err := s.riotCient.Get(region, fmt.Sprintf(leagueBase+"/entries/by-summoner/%s", summonerId), nil)
 
 	if err != nil {
 		return out, err
 	}
 
-    defer resp.Body.Close()
+	defer resp.Body.Close()
 
-    out, err = helpers.ParseBody[[]LeagueEntryDto](resp.Body)
+	out, err = helpers.ParseBody[[]LeagueEntryDto](resp.Body)
 
-    if err != nil {
-        return out, err
-    }
+	if err != nil {
+		return out, err
+	}
 
 	return out, nil
 }

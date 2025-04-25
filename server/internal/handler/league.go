@@ -1,8 +1,8 @@
 package handler
 
 import (
-    "nashor/internal/problem"
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
+	"nashor/internal/problem"
 )
 
 func (h Handler) HandleGetLeagueEntriesById(c *gin.Context) {
@@ -23,4 +23,3 @@ func (h Handler) HandleGetLeagueEntriesById(c *gin.Context) {
 
 	c.JSON(200, data)
 }
-

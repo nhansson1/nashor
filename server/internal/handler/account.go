@@ -1,12 +1,12 @@
 package handler
 
 import (
-    "nashor/internal/problem"
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
+	"nashor/internal/problem"
 )
 
 func (h Handler) HandleGetAccountByRiotId(c *gin.Context) {
-    var (
+	var (
 		gameName = c.Param("gameName")
 		tagLine  = c.Param("tagLine")
 	)
@@ -23,5 +23,3 @@ func (h Handler) HandleGetAccountByRiotId(c *gin.Context) {
 
 	c.JSON(200, data)
 }
-
-

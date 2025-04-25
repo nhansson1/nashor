@@ -1,9 +1,8 @@
 package server
 
 import (
-	"nashor/internal/handler"
-
 	"github.com/gin-gonic/gin"
+	"nashor/internal/handler"
 )
 
 func RegisterRoutes(r *gin.Engine, h *handler.Handler) {
@@ -26,7 +25,7 @@ func RegisterRoutes(r *gin.Engine, h *handler.Handler) {
 		}
 		m := api.Group("/matches")
 		{
-            m.GET("by-puuid/:server/:puuid/:start/:count", h.HandleGetMatchesByPuuid)
+			m.GET("by-puuid/:server/:puuid/:start/:count", h.HandleGetMatchesByPuuid)
 		}
 	}
 }

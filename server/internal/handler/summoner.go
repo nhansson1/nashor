@@ -1,9 +1,8 @@
 package handler
 
 import (
-	"nashor/internal/problem"
-
 	"github.com/gin-gonic/gin"
+	"nashor/internal/problem"
 )
 
 func (h Handler) HandleGetSummonerById(c *gin.Context) {
@@ -27,9 +26,9 @@ func (h Handler) HandleGetSummonerById(c *gin.Context) {
 
 func (h Handler) HandleGetSummonerProfile(c *gin.Context) {
 	var (
-		region = c.Param("region")
+		region   = c.Param("region")
 		gameName = c.Param("gameName")
-		tagLine = c.Param("tagLine")
+		tagLine  = c.Param("tagLine")
 	)
 	acc, err := h.accountService.GetAccountByRiotId(gameName, tagLine)
 
@@ -65,7 +64,7 @@ func (h Handler) HandleGetSummonerProfile(c *gin.Context) {
 		"summoner": s,
 		"account": gin.H{
 			"gameName": acc.GameName,
-			"tagLine": acc.TagLine,
+			"tagLine":  acc.TagLine,
 		},
 		"ranks": entries,
 	})

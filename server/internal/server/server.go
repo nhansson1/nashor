@@ -1,12 +1,11 @@
 package server
 
 import (
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"nashor/internal/handler"
 	"nashor/internal/services"
 	"os"
-
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
 )
 
 func Run() {

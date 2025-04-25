@@ -26,7 +26,7 @@ func (s MatchService) GetMatchIdsByPuuid(server, puuid, start, count string) ([]
 	queries["count"] = count
 	queries["start"] = start
 
-	resp, err := s.riotClient.Get(helpers.GetRegionFromServer(server), fmt.Sprintf(matchBase+"/by-puuid/%s/ids", puuid), queries)
+	resp, err := s.riotClient.Get(s.riotClient.GetRegionFromServer(server), fmt.Sprintf(matchBase+"/by-puuid/%s/ids", puuid), queries)
 
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (s MatchService) GetMatchDataById(server, id string, ch chan types.MatchDto
 		return
 	}
 
-	resp, err := s.riotClient.Get(helpers.GetRegionFromServer(server), fmt.Sprintf(matchBase+"/%s", id), nil)
+	resp, err := s.riotClient.Get(s.riotClient.GetRegionFromServer(server), fmt.Sprintf(matchBase+"/%s", id), nil)
 
 	if err != nil {
 		return

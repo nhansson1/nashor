@@ -2,11 +2,11 @@ package services
 
 import (
 	"fmt"
-	"nashor/internal/helpers"
 	"nashor/internal/problem"
-	ratelimiter "nashor/internal/rate-limiter"
+	"nashor/internal/ratelimiter"
 	"nashor/internal/storage"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -48,6 +48,60 @@ func NewRiotClient(apiKey, region string) *RiotClient {
 	}
 }
 
+func (rc RiotClient) GetRegionFromServer(server string) string {
+	var region string
+
+	switch strings.ToUpper(server) {
+	case "EUW1", "EUNE", "TR", "ME1", "RU":
+		region = "EUROPE"
+	case "NA1", "BR", "LAN", "LAS":
+		region = "AMERICAS"
+	case "KR", "JP":
+		region = "ASIA"
+	case "OCE", "SG2", "TW2", "VN2":
+		region = "SEA"
+	}
+
+	return region
+}
+
+func (rc RiotClient) createRiotUrl(routingValue, endpoint string, queries map[string]string) *url.URL {
+	u := &url.URL{
+		Scheme: "https",
+		Host:   fmt.Sprint(routingValue, ".api.riotgames.com"),
+		Path:   endpoint,
+	}
+
+	q := u.Query()
+
+	for k, v := range queries {
+		q.Add(k, v)
+	}
+
+	u.RawQuery = q.Encode()
+
+	return u
+}
+
+func (rc RiotClient) makeRequest(u *url.URL) (*http.Response, error) {
+	req, err := http.NewRequest("GET", u.String(), nil)
+
+	if err != nil {
+		fmt.Println("Failed to create request.")
+		return nil, err
+	}
+
+	req.Header.Add("X-Riot-Token", rc.apiKey)
+
+	resp, err := rc.httpClient.Do(req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
 func (rc RiotClient) Get(region, endpoint string, queries map[string]string) (*http.Response, error) {
 	r := strings.ToLower(region)
 
@@ -65,9 +119,9 @@ func (rc RiotClient) Get(region, endpoint string, queries map[string]string) (*h
 	headers := make(map[string]string)
 	headers["X-Riot-Token"] = rc.apiKey
 
-	u := helpers.CreateRiotUrl(region, endpoint, queries)
+	u := rc.createRiotUrl(region, endpoint, queries)
 
-	resp, err := helpers.MakeRequest(rc.httpClient, u, headers)
+	resp, err := rc.makeRequest(u)
 
 	if err != nil {
 		err = fmt.Errorf("Request to %s failed: %w", u.String(), err)
