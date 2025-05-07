@@ -19,7 +19,7 @@ RUN go mod download
 
 COPY server .
 
-COPY --from=client /app/client/dist ./internal
+COPY --from=client /app/client/dist ./internal/dist
 
 RUN go build -o ./bin/nashor ./cmd/nashor
 
