@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import HomeView from "../views/HomeView.vue";
+import HomeView from "@/views/HomeView.vue";
 import SummonerView from "../views/SummonerView.vue";
 
 const router = createRouter({
@@ -30,6 +30,10 @@ router.beforeEach((to, _, next) => {
         document.title = title;
         next();
     }
+
+    if (to.meta.title) document.title = to.meta.title as string;
+
+    next();
 })
 
 export default router;
