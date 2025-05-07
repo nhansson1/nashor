@@ -1,18 +1,18 @@
 package server
 
 import (
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
 	"nashor/internal/handler"
 	"nashor/internal/services"
+	"net/http"
 	"os"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
 func Run() {
 	router := gin.New()
-
 	cors := cors.Default()
-
 	router.Use(cors)
 
 	rc := services.NewRiotClient(os.Getenv("API_KEY"), os.Getenv("REGION"))
@@ -23,7 +23,12 @@ func Run() {
 	leagueService := services.NewLeagueService(rc)
 
 	h := handler.NewHandler(&accountService, &summonerService, &matchService, &leagueService)
+
+	router.NoRoute(h.HandleServePage)
+
 	RegisterRoutes(router, &h)
+
+	router.StaticFS("/assets", http.Dir("./internal/dist/assets"))
 
 	router.Run()
 }

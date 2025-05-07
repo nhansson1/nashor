@@ -5,10 +5,11 @@ import Footer from "./components/Footer.vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
+console.log(route);
 </script>
 
 <template>
-    <Header v-if="route.name != 'home'" />
+    <Header v-if="route.name && route.name != 'home'" />
     <RouterView />
     <Footer />
 </template>
