@@ -17,7 +17,7 @@ const profile = ref<ProfileResponse>();
 const fetchProfile = async () => {
     const { region, gameName, tagLine } = route.params;
     const url = new URL(
-        `http://localhost:8080/api/v1/summoner/profile/by-riot-id/${route.params.region}/${route.params.gameName}/${route.params.tagLine}`
+        `http://localhost:8080/api/v1/summoner/profile/by-riot-id/${region}/${gameName}/${tagLine}`
     );
 
     try {

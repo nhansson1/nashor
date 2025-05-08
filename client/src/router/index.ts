@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import HomeView from "@/views/HomeView.vue";
-import SummonerView from "../views/SummonerView.vue";
+import SummonerView from "@/views/SummonerView.vue";
+import NotFound from "@/views/NotFound.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,6 +14,11 @@ const router = createRouter({
                 title: "Nashor"
             },
             component: HomeView,
+        },
+        {
+            path: "/404",
+            name: "NotFound",
+            component: NotFound
         },
         {
             path: "/summoner/:region/:gameName/:tagLine",
