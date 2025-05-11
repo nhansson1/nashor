@@ -10,6 +10,7 @@ interface ProfileResponse {
     summoner: Summoner;
     ranks: RankEntry[];
 }
+
 const router = useRouter();
 const route = useRoute();
 const profile = ref<ProfileResponse>();
@@ -56,6 +57,7 @@ watch(() => route.params.gameName, fetchProfile, { immediate: true });
 <style scoped>
 .page {
     min-height: 100vh;
+    background-color: var(--background-color);
     padding: 0.5rem;
 }
 

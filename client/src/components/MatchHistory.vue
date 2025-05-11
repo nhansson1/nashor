@@ -45,7 +45,9 @@ watch(() => props.puuid, () => { matches.value = []; getMatches(0); }, {
 
 <template>
     <div class="match-history">
-        <Match v-for="match in matches" :match="match" :puuid="puuid" :key="match.metadata.matchId" />
+        <Match v-if="matches.length > 0" v-for="match in matches" :match="match" :puuid="puuid"
+            :key="match.metadata.matchId" />
+        <div class="match-history__match--loading" v-else v-for="n in 10"></div>
         <Button @button-click="() => getMatches(matches.length)" text="load more" />
     </div>
 </template>
@@ -63,5 +65,26 @@ watch(() => props.puuid, () => { matches.value = []; getMatches(0); }, {
 
 .match-history .button:last-child {
     align-self: center;
+}
+
+.match-history__match--loading {
+    height: 6.375rem;
+    background-color: var(--background);
+    border-radius: var(--rounding-base);
+    animation: skeleton ease 1.5s infinite;
+}
+
+@keyframes skeleton {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 </style>

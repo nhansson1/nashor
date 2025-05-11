@@ -16,7 +16,7 @@ if (props.summonerData.ranks.length !== 2) {
         if (!otherRank)
             return { queueType: index === 0 ? "RANKED_SOLO_5x5" : "RANKED_FLEX_SR", ...rankDefaults };
 
-        return { queueType: otherRank?.queueType === "RANKED_SOLO_5x5" ? "RANKED_FLEX_SR" : "RANKED_SOLO_5x5", ...rankDefaults };
+        return { queueType: otherRank.queueType === "RANKED_SOLO_5x5" ? "RANKED_FLEX_SR" : "RANKED_SOLO_5x5", ...rankDefaults };
     });
 }
 const riotId = `${props.summonerData.account.gameName}#${props.summonerData.account.tagLine}`;
