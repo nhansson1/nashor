@@ -1,20 +1,34 @@
 package services
 
 import (
+	"context"
+	_ "embed"
+	"encoding/json"
 	"fmt"
+	"log"
 	"nashor/internal/problem"
-	"nashor/internal/ratelimiter"
 	"nashor/internal/storage"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/redis/go-redis/v9"
 )
+
+//go:embed scripts/tokenbucket.lua
+var luaStr string
+var tokenBucketScript = redis.NewScript(luaStr)
+
+type RedisBucketRes struct {
+	Status string `json:"status"`
+	Fast   int    `json:"fast"`
+	Slow   int    `json:"slow"`
+}
 
 type RiotClient struct {
 	apiKey string
 	region string
-	limits map[string]*ratelimiter.RateLimiter
 
 	httpClient *http.Client
 	cache      *storage.RedisClient
@@ -28,20 +42,12 @@ func NewRiotClient(apiKey, region string) *RiotClient {
 
 	rdb := storage.NewRedisClient()
 
-	limits := make(map[string]*ratelimiter.RateLimiter)
-	routingValues := []string{"EUROPE", "AMERICAS", "ASIA", "EUW1", "NA1", "EUN1"}
-
-	for _, r := range routingValues {
-		limits[strings.ToLower(r)] = ratelimiter.NewRateLimiter()
-	}
-
 	pdb := storage.NewPostgresClient()
 
 	return &RiotClient{
 		apiKey:     apiKey,
 		region:     region,
 		httpClient: client,
-		limits:     limits,
 
 		cache: rdb,
 		db:    pdb,
@@ -83,6 +89,25 @@ func (rc RiotClient) createRiotUrl(routingValue, endpoint string, queries map[st
 	return u
 }
 
+func (rc RiotClient) checkRateLimits(region string) RedisBucketRes {
+	res, err := tokenBucketScript.Run(context.Background(), rc.cache.GetClient(), []string{fmt.Sprint("api:rate_limits_", region)}).Result()
+
+	if err != nil {
+		log.Fatal("failed to run lua script", err)
+	}
+
+	jsonStr, ok := res.(string)
+
+	if !ok {
+		log.Fatal("lua script returned unexpected type")
+	}
+
+	var out RedisBucketRes
+	json.Unmarshal([]byte(jsonStr), &out)
+
+	return out
+}
+
 func (rc RiotClient) makeRequest(u *url.URL) (*http.Response, error) {
 	req, err := http.NewRequest("GET", u.String(), nil)
 
@@ -103,18 +128,15 @@ func (rc RiotClient) makeRequest(u *url.URL) (*http.Response, error) {
 }
 
 func (rc RiotClient) Get(region, endpoint string, queries map[string]string) (*http.Response, error) {
-	r := strings.ToLower(region)
+	limits := rc.checkRateLimits(strings.ToLower(region))
 
-	if rc.limits[r].IsLimited() {
-		if rc.limits[r].SlowBucket.IsEmpty() {
-			return nil, problem.NewRequestError(429, "No tokens remaining retry later")
-		}
-
+	switch limits.Status {
+	case "fast_limit":
 		<-time.After(time.Second * 1)
 		return rc.Get(region, endpoint, queries)
+	case "slow_limit":
+		return nil, problem.NewRequestError(429, "No tokens remaining retry later")
 	}
-
-	rc.limits[r].ConsumeToken()
 
 	headers := make(map[string]string)
 	headers["X-Riot-Token"] = rc.apiKey
