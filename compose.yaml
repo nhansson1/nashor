@@ -5,5 +5,3 @@ services:
       - "8080:8080"
     environment:
       - GIN_MODE=release
-  cache:
-    image: "redis:alpine"
