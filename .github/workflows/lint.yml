@@ -1,0 +1,42 @@
+name: lint
+  
+on:
+  push:
+    branches: ["*"]
+  pull_requests:
+    branches: ["master"]
+
+jobs:
+  lint-server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+
+      - name: Check file formatting
+      - run: |
+          UNFORMATTED=$(gofmt -l .)
+          if [ -n "$UNFORMATTED" ]; then
+            echo "Unformatted files:"
+            echo "$UNFORMATTED"
+            exit 1
+          fi
+
+      - name: Run go vet
+      - run: go vet ./...
+
+  lint-client:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+
+      - run: npm ci
+      - name: Check file formatting
+      - run: npx prettier . --check
