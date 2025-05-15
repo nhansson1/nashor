@@ -3,8 +3,6 @@ name: lint
 on:
   push:
     branches: ["*"]
-  pull_requests:
-    branches: ["master"]
 
 jobs:
   lint-server:
