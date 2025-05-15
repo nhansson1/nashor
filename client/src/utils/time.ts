@@ -1,6 +1,6 @@
 export const getTimeElapsedSinceMatch = (
   gameStartTimestamp: number,
-  maxTimePlayed: number
+  maxTimePlayed: number,
 ) => {
   const gameEndTimeStamp = gameStartTimestamp + maxTimePlayed * 1000;
 
@@ -13,7 +13,7 @@ export const getTimeElapsedSinceMatch = (
 
 export const getTimeSinceMatchString = (
   timeSinceGame: number,
-  gameEndedTimeStamp: number
+  gameEndedTimeStamp: number,
 ): string => {
   let timeSinceGameString = "";
 
@@ -39,7 +39,7 @@ export const getTimeSinceMatchString = (
       timeDifferenceDays < 2 ? "a day ago" : `${timeDifferenceDays} days ago`;
   } else {
     timeSinceGameString = `${new Date(
-      gameEndedTimeStamp
+      gameEndedTimeStamp,
     ).toLocaleDateString()}`;
   }
 
@@ -49,7 +49,7 @@ export const getTimeSinceMatchString = (
 export const getGameDurationString = (gameDuration: number) => {
   const gameDurationInMinutes = String(Math.floor(gameDuration / 60)).padStart(
     2,
-    "0"
+    "0",
   );
   const remainingSeconds = String(gameDuration % 60).padStart(2, "0");
 

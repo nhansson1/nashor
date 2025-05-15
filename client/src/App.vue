@@ -8,7 +8,7 @@ const route = useRoute();
 </script>
 
 <template>
-    <Header v-if="route.name && route.name != 'home'" />
-    <RouterView />
-    <Footer />
+  <Header v-if="route.name && route.name != 'home'" />
+  <RouterView />
+  <Footer />
 </template>

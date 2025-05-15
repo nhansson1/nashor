@@ -3,29 +3,28 @@ import items from "../static/item.json";
 import champions from "../static/champion.json";
 
 export const getQueueNameById = (queueId: number): string => {
-    const queue = queues.find(queue => queue.queueId === queueId);
+  const queue = queues.find((queue) => queue.queueId === queueId);
 
-    return queue?.description ?? "unknown mode";
+  return queue?.description ?? "unknown mode";
 };
 
 export const getChampionKeyById = (championId: number): string => {
-    let championKey = ""
+  let championKey = "";
 
-    for (const champion of Object.values(champions.data)) {
-        if (champion.key === championId.toString()) {
-            championKey = champion.id;
-            break;
-        }
+  for (const champion of Object.values(champions.data)) {
+    if (champion.key === championId.toString()) {
+      championKey = champion.id;
+      break;
     }
+  }
 
-    return championKey
-}
+  return championKey;
+};
 
 export const getItemDataById = (id: number) => {
-    const itemObj = items.data[id.toString() as keyof typeof items.data];
+  const itemObj = items.data[id.toString() as keyof typeof items.data];
 
-    if (!itemObj)
-        return null;
+  if (!itemObj) return null;
 
-    return itemObj;
-}
+  return itemObj;
+};
