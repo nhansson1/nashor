@@ -176,6 +176,8 @@ func NewPostgresClient() *PostgresClient {
 	connStr := os.Getenv("DB_URI")
 
 	db := sqlx.MustOpen("postgres", connStr)
+	db.SetMaxOpenConns(100)
+	db.SetMaxIdleConns(10)
 
 	return &PostgresClient{
 		db: db,
