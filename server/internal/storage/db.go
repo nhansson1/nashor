@@ -3,10 +3,12 @@ package storage
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
+	"log"
 	"nashor/internal/types"
 	"os"
+
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 type MatchDB struct {
@@ -172,12 +174,71 @@ func (c *PostgresClient) GetMatchById(id string) (types.MatchDto, error) {
 	return out, nil
 }
 
+func mustSetupTables(db *sqlx.DB) {
+	pq := "CREATE TABLE IF NOT EXISTS perks (perks_id SERIAL PRIMARY KEY, perk_data json)"
+
+	_, err := db.Exec(pq)
+
+	if err != nil {
+		log.Fatal("failed to create perk table", err)
+	}
+
+	mq := `CREATE TABLE IF NOT EXISTS matches (match_id TEXT PRIMARY KEY, 
+			game_duration INT,
+			game_end_timestamp BIGINT,
+			game_start_timestamp BIGINT,
+			queue_id INT)`
+
+	_, err = db.Exec(mq)
+
+	if err != nil {
+		log.Fatal("failed to create match table", err)
+	}
+
+	pq = `CREATE TABLE IF NOT EXISTS participants (champion_name VARCHAR(16),
+	 		champion_id INT,
+	  		puuid CHAR(78),
+	   		kills INT,
+	    	deaths INT,
+		 	assists INT,
+		  	neutral_minions_killed INT,
+		   	total_minions_killed INT,
+		    gold_earned INT,
+			vision_score INT,
+			riot_id_game_name VARCHAR(16),
+			riot_id_tagline VARCHAR(5),
+			summoner_name VARCHAR(16),
+			win BOOL,
+			item_0 INT,
+			item_1 INT,
+			item_2 INT,
+			item_3 INT,
+			item_4 INT,
+			item_5 INT,
+			item_6 INT,
+			summoner_1_id INT,
+			summoner_2_id INT, 
+			match_id TEXT NOT NULL, 
+			perks_id INT, FOREIGN KEY 
+			(perks_id) REFERENCES perks(perks_id) ON DELETE CASCADE, 
+			participant_id SERIAL PRIMARY KEY, 
+			FOREIGN KEY (match_id) REFERENCES matches(match_id) ON DELETE CASCADE)`
+
+	_, err = db.Exec(pq)
+
+	if err != nil {
+		log.Fatal("failed to create participant table", err)
+	}
+}
+
 func NewPostgresClient() *PostgresClient {
 	connStr := os.Getenv("DB_URI")
 
 	db := sqlx.MustOpen("postgres", connStr)
 	db.SetMaxOpenConns(100)
 	db.SetMaxIdleConns(10)
+
+	mustSetupTables(db)
 
 	return &PostgresClient{
 		db: db,
