@@ -19,7 +19,7 @@ const perk2 = getPerkSource(props.perk2Id);
 const summonerSources = [summoner1, summoner2].map((summoner) => {
   if (!summoner) return "";
 
-  return `https://cdn.nashor.gg/assets/15.7.1/img/spell/${summoner}`;
+  return `${import.meta.env.VITE_ASSETS_BASE}/img/spell/${summoner}`;
 });
 
 const perkSources = [perk1, perk2].map((perk) => {
