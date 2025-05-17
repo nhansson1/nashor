@@ -195,7 +195,7 @@ func mustSetupTables(db *sqlx.DB) {
 		log.Fatal("failed to create match table", err)
 	}
 
-	pq = `CREATE TABLE IF NOT EXISTS participants (championName VARCHAR(16),
+	pq = `CREATE TABLE IF NOT EXISTS participants (champion_name VARCHAR(16),
 	 		champion_id INT,
 	  		puuid CHAR(78),
 	   		kills INT,
