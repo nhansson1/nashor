@@ -121,7 +121,7 @@ func GetMatchDto(m MatchDB, p []ParticipantDB) types.MatchDto {
 func (c *PostgresClient) createParticipant(p types.ParticipantDto, matchId string, perksId int) {
 	q := "INSERT INTO participants (champion_name, champion_id, puuid, kills, deaths, assists, neutral_minions_killed, total_minions_killed, gold_earned, vision_score, riot_id_game_name, riot_id_tagline, summoner_name, win, item_0, item_1, item_2, item_3, item_4, item_5, item_6, summoner_1_id, summoner_2_id, match_id, perks_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25)"
 
-	c.db.QueryRow(q, p.ChampionName, p.ChampionId, p.Puuid, p.Kills, p.Deaths, p.Assists, p.NeutralMinionsKilled, p.TotalMinionsKilled, p.GoldEarned, p.VisionScore, p.RiotIdGameName, p.RiotIdTagline, p.SummonerName, p.Win, p.Item0, p.Item1, p.Item2, p.Item3, p.Item4, p.Item5, p.Item6, p.Summoner1Id, p.Summoner2Id, matchId, perksId)
+	c.db.Exec(q, p.ChampionName, p.ChampionId, p.Puuid, p.Kills, p.Deaths, p.Assists, p.NeutralMinionsKilled, p.TotalMinionsKilled, p.GoldEarned, p.VisionScore, p.RiotIdGameName, p.RiotIdTagline, p.SummonerName, p.Win, p.Item0, p.Item1, p.Item2, p.Item3, p.Item4, p.Item5, p.Item6, p.Summoner1Id, p.Summoner2Id, matchId, perksId)
 }
 
 func (c *PostgresClient) CreateMatch(m types.MatchDto) {
@@ -175,7 +175,7 @@ func (c *PostgresClient) GetMatchById(id string) (types.MatchDto, error) {
 }
 
 func mustSetupTables(db *sqlx.DB) {
-	pq := "CREATE TABLE IF NOT EXISTS perks (perks_id SERIAL PRIMARY KEY, perk_data json)"
+	pq := "CREATE TABLE IF NOT EXISTS perks (perks_id SERIAL PRIMARY KEY, perk_data JSON)"
 
 	_, err := db.Exec(pq)
 
@@ -183,8 +183,8 @@ func mustSetupTables(db *sqlx.DB) {
 		log.Fatal("failed to create perk table", err)
 	}
 
-	mq := `CREATE TABLE IF NOT EXISTS matches (match_id TEXT PRIMARY KEY, 
-			game_duration INT,
+	mq := `CREATE TABLE IF NOT EXISTS matches (match_id VARCHAR(16) NOT NULL PRIMARY KEY,
+			game_duration BIGINT,
 			game_end_timestamp BIGINT,
 			game_start_timestamp BIGINT,
 			queue_id INT)`
@@ -196,14 +196,14 @@ func mustSetupTables(db *sqlx.DB) {
 	}
 
 	pq = `CREATE TABLE IF NOT EXISTS participants (champion_name VARCHAR(16),
-	 		champion_id INT,
-	  		puuid CHAR(78),
-	   		kills INT,
-	    	deaths INT,
-		 	assists INT,
-		  	neutral_minions_killed INT,
-		   	total_minions_killed INT,
-		    gold_earned INT,
+			champion_id INT,
+			puuid CHAR(78),
+			kills INT,
+			deaths INT,
+			assists INT,
+			neutral_minions_killed INT,
+			total_minions_killed INT,
+			gold_earned INT,
 			vision_score INT,
 			riot_id_game_name VARCHAR(16),
 			riot_id_tagline VARCHAR(5),
@@ -217,11 +217,11 @@ func mustSetupTables(db *sqlx.DB) {
 			item_5 INT,
 			item_6 INT,
 			summoner_1_id INT,
-			summoner_2_id INT, 
-			match_id TEXT NOT NULL, 
-			perks_id INT, FOREIGN KEY 
-			(perks_id) REFERENCES perks(perks_id) ON DELETE CASCADE, 
-			participant_id SERIAL PRIMARY KEY, 
+			summoner_2_id INT,
+			match_id VARCHAR(16) NOT NULL,
+			perks_id INT,
+			FOREIGN KEY (perks_id) REFERENCES perks(perks_id) ON DELETE CASCADE,
+			participant_id SERIAL PRIMARY KEY,
 			FOREIGN KEY (match_id) REFERENCES matches(match_id) ON DELETE CASCADE)`
 
 	_, err = db.Exec(pq)
