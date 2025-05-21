@@ -10,6 +10,8 @@ export interface IParticipant {
   goldEarned: number;
   visionScore: number;
   riotIdGameName: string;
+  riotIdTagline: string;
+  summonerName: string;
   win: boolean;
   item0: number;
   item1: number;
