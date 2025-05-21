@@ -57,3 +57,9 @@ export const getSummonerSource = (id: number): string | null => {
 export const getPerkSource = (id: number): string | null => {
   return runes.find((rune) => rune.id === id)?.iconPath ?? null;
 };
+
+export const getParticipantDisplayName = (participant: IParticipant) => {
+  return participant.riotIdGameName
+    ? participant.riotIdGameName
+    : participant.summonerName;
+};
